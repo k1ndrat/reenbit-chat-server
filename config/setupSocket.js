@@ -15,8 +15,6 @@ export function setupSocketServer(server) {
 
     socket.on("disconnect", (reason) => {
       console.log(`Disconnected: ${reason}`);
-
-      // socket.connect();
     });
 
     socket.on("subscribe_notification", (userID) => {
@@ -26,7 +24,7 @@ export function setupSocketServer(server) {
 
     socket.on("join_chat", (data) => {
       socket.join(data);
-      console.log(`User with joined chat: ${data}`);
+      console.log(`User joined chat: ${data}`);
     });
 
     socket.on("message", async (data) => {

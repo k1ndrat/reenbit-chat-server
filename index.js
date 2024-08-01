@@ -35,31 +35,3 @@ mongoose.connection.once("open", () => {
     setupSocketServer(expressServer);
   });
 });
-
-// sockets
-// function setupSocketServer(server) {
-//   const io = new Server(server, {
-//     cors: {
-//       origin: "*",
-//     },
-//   });
-
-//   io.on("connection", (socket) => {
-//     console.log(`User ${socket.id} connected`);
-
-//     socket.on("join_chat", (data) => {
-//       socket.join(data);
-//       console.log(`User with ID: ${socket.id} joined chat: ${data}`);
-//     });
-
-//     socket.on("message", (data) => {
-//       console.log(data);
-//       socket
-//         .to(data.chat)
-//         .emit(
-//           "receive_message",
-//           `${socket.id.substring(0, 5)}: ${data.message}`
-//         );
-//     });
-//   });
-// }
