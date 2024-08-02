@@ -38,21 +38,21 @@ export function setupSocketServer(server) {
       const quote = await response.json();
       setTimeout(async () => {
         io.to(data.chatID).emit("receive_message", {
-          author: "bot",
+          author: data.bot,
           chatID: data.chatID,
           message: quote.content,
           createdAt: new Date(Date.now()).toISOString(),
         });
 
         io.to(data.author).emit("receive_notification", {
-          author: "bot",
+          author: data.bot,
           chatID: data.chatID,
           message: quote.content,
           createdAt: new Date(Date.now()).toISOString(),
         });
 
         await postMessage({
-          author: "bot",
+          author: data.bot,
           chatID: data.chatID,
           message: quote.content,
         });
