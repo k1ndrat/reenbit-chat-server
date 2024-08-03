@@ -35,6 +35,7 @@ export function setupSocketServer(server) {
       });
 
       io.to(data.chatID).emit("receive_message", data);
+      io.to(data.author).emit("receive_notification", data);
 
       const response = await fetch("https://api.quotable.io/random");
       const quote = await response.json();
