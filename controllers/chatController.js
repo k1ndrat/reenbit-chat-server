@@ -8,7 +8,31 @@ const defaultChats = [
 
 const getChats = async (req, res) => {
   try {
-    let chats = await Chat.find({ userID: req.params.userID });
+    let chats = await Chat.aggregate([
+      { $match: { userID: req.params.userID } },
+      {
+        $lookup: {
+          from: "messages",
+          localField: "last_message",
+          foreignField: "_id",
+          as: "last_message",
+        },
+      },
+      { $unwind: { path: "$last_message", preserveNullAndEmptyArrays: true } },
+
+      {
+        $addFields: {
+          sortField: {
+            $cond: {
+              if: { $gt: ["$last_message.createdAt", null] },
+              then: "$last_message.createdAt",
+              else: "$createdAt",
+            },
+          },
+        },
+      },
+      { $sort: { sortField: -1 } },
+    ]);
 
     if (chats.length === 0) {
       console.log("Adding chats");
@@ -16,7 +40,9 @@ const getChats = async (req, res) => {
         defaultChats.map((chat) => ({ ...chat, userID: req.params.userID }))
       );
 
-      chats = await Chat.find({ userID: req.params.userID });
+      chats = await Chat.find({ userID: req.params.userID }).populate(
+        "last_message"
+      );
     }
     return res.status(200).json(chats);
   } catch (error) {

@@ -1,21 +1,26 @@
 import Message from "../models/Message.js";
+import Chat from "../models/Chat.js";
 
 const postMessage = async (body) => {
   const { author, chatID, message } = body;
-  // console.log(body);
+
   if (!author || !chatID || !message) {
     console.error({ message: "author, chatID, message are required" });
-    return;
-    // return res.status(400).json({ message: "author, chatID, message are required" });
+
+    return res
+      .status(400)
+      .json({ message: "author, chatID, message are required" });
   }
 
   try {
     // store the new episode
-    await Message.create({
+    const createdMessage = await Message.create({
       author,
       chatID,
       message,
     });
+
+    await Chat.updateOne({ _id: chatID }, { last_message: createdMessage._id });
 
     // res.status(201).json({ success: "New message was added successfully" });
     console.log({ success: "New message was added successfully" });
