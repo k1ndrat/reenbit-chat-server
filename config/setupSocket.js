@@ -59,7 +59,7 @@ export function setupSocketServer(server) {
         });
 
         await postMessage({
-          author: data.bot,
+          author: data.bot_name + "" + data.bot_surname,
           chatID: data.chatID,
           message: quote.content,
         });
