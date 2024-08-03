@@ -2,8 +2,8 @@ import Chat from "../models/Chat.js";
 
 const defaultChats = [
   { bot_name: "Петро", bot_surname: "Моставчук" },
-  { bot_name: "Тіна", bot_surname: "Кароль" },
-  { bot_name: "Пес", bot_surname: "Дюк" },
+  { bot_name: "Міша", bot_surname: "Лебіга" },
+  { bot_name: "Андрій", bot_surname: "Мацевко" },
 ];
 
 const getChats = async (req, res) => {
