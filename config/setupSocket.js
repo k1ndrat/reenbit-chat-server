@@ -40,8 +40,15 @@ export function setupSocketServer(server) {
       const response = await fetch("https://api.quotable.io/random");
       const quote = await response.json();
       setTimeout(async () => {
+        const postedMessage = await postMessage({
+          author: data.bot_name + " " + data.bot_surname,
+          chatID: data.chatID,
+          message: quote.content,
+        });
+
         io.to(data.chatID).emit("receive_message", {
-          author: data.bot_name + "" + data.bot_surname,
+          _id: postedMessage._id,
+          author: data.bot_name + " " + data.bot_surname,
           bot_name: data.bot_name,
           bot_surname: data.bot_surname,
           chatID: data.chatID,
@@ -50,18 +57,13 @@ export function setupSocketServer(server) {
         });
 
         io.to(data.author).emit("receive_notification", {
-          author: data.bot_name + "" + data.bot_surname,
+          _id: postedMessage._id,
+          author: data.bot_name + " " + data.bot_surname,
           bot_name: data.bot_name,
           bot_surname: data.bot_surname,
           chatID: data.chatID,
           message: quote.content,
           createdAt: new Date(Date.now()).toISOString(),
-        });
-
-        await postMessage({
-          author: data.bot_name + "" + data.bot_surname,
-          chatID: data.chatID,
-          message: quote.content,
         });
       }, 3000);
     });

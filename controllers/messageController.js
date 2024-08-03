@@ -22,10 +22,9 @@ const postMessage = async (body) => {
 
     await Chat.updateOne({ _id: chatID }, { last_message: createdMessage._id });
 
-    // res.status(201).json({ success: "New message was added successfully" });
     console.log({ success: "New message was added successfully" });
+    return createdMessage;
   } catch (error) {
-    // res.status(500).json({ message: error.message });
     console.error({ message: error.message });
   }
 };
