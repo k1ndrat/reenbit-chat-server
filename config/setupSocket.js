@@ -28,14 +28,20 @@ export function setupSocketServer(server) {
     });
 
     socket.on("message", async (data) => {
-      await postMessage({
+      const userMessage = await postMessage({
         author: data.author,
         chatID: data.chatID,
         message: data.message,
       });
 
-      io.to(data.chatID).emit("receive_message", data);
-      io.to(data.author).emit("receive_notification", data);
+      io.to(data.chatID).emit("receive_message", {
+        ...data,
+        _id: userMessage._id,
+      });
+      io.to(data.author).emit("receive_notification", {
+        ...data,
+        _id: userMessage._id,
+      });
 
       const response = await fetch("https://api.quotable.io/random");
       const quote = await response.json();
