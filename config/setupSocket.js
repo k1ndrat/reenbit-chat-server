@@ -34,6 +34,8 @@ export function setupSocketServer(server) {
         message: data.message,
       });
 
+      io.to(data.chatID).emit("receive_message", data);
+
       const response = await fetch("https://api.quotable.io/random");
       const quote = await response.json();
       setTimeout(async () => {
