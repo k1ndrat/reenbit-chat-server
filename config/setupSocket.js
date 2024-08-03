@@ -41,14 +41,18 @@ export function setupSocketServer(server) {
       const quote = await response.json();
       setTimeout(async () => {
         io.to(data.chatID).emit("receive_message", {
-          author: data.bot,
+          author: data.bot_name + "" + data.bot_surname,
+          bot_name: data.bot_name,
+          bot_surname: data.bot_surname,
           chatID: data.chatID,
           message: quote.content,
           createdAt: new Date(Date.now()).toISOString(),
         });
 
         io.to(data.author).emit("receive_notification", {
-          author: data.bot,
+          author: data.bot_name + "" + data.bot_surname,
+          bot_name: data.bot_name,
+          bot_surname: data.bot_surname,
           chatID: data.chatID,
           message: quote.content,
           createdAt: new Date(Date.now()).toISOString(),
